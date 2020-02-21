@@ -62,7 +62,7 @@ task CreateSequenceGroupingTSV {
   >>>
   runtime {
     preemptible: preemptible_tries
-    docker: "us.gcr.io/broad-gotc-prod/python:2.7"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/python:2.7"
     memory: "2 GiB"
   }
   output {
@@ -110,7 +110,7 @@ task ScatterIntervalList {
     Int interval_count = read_int(stdout())
   }
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     memory: "2 GiB"
   }
 }
@@ -145,7 +145,7 @@ task ConvertToCram {
     samtools index ~{output_basename}.cram
   >>>
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3 GiB"
     cpu: "1"
@@ -176,7 +176,7 @@ task ConvertToBam {
     samtools index ~{output_basename}.bam
   >>>
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: 3
     memory: "3 GiB"
     cpu: "1"
@@ -202,7 +202,7 @@ task SumFloats {
     Float total_size = read_float(stdout())
   }
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/python:2.7"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/python:2.7"
     preemptible: preemptible_tries
   }
 }

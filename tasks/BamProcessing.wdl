@@ -40,7 +40,7 @@ task SortSam {
 
   }
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     disks: "local-disk " + disk_size + " HDD"
     cpu: "1"
     memory: "5000 MiB"
@@ -60,7 +60,7 @@ task SortSamSpark {
     String output_bam_basename
     Int preemptible_tries
     Int compression_level
-    String gatk_docker = "us.gcr.io/broad-gatk/gatk:4.0.10.1"
+    String gatk_docker = "gcr.io/arcus-jpe-pipe-stage-4f4279cc/gatk:4.0.10.1"
   }
   # SortSam spills to disk a lot more because we are only store 300000 records in RAM now because its faster for our data so it needs
   # more disk space.  Also it spills to disk in an uncompressed format so we need to account for that with a larger multiplier
@@ -135,7 +135,7 @@ task MarkDuplicates {
       ADD_PG_TAG_TO_READS=false
   }
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "~{memory_size} GiB"
     disks: "local-disk " + disk_size + " HDD"
@@ -219,7 +219,7 @@ task BaseRecalibrator {
     File ref_fasta_index
     Int bqsr_scatter
     Int preemptible_tries
-    String gatk_docker = "us.gcr.io/broad-gatk/gatk:4.0.10.1"
+    String gatk_docker = "gcr.io/arcus-jpe-pipe-stage-4f4279cc/gatk:4.0.10.1"
   }
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB") + size(ref_dict, "GiB")
@@ -269,7 +269,7 @@ task ApplyBQSR {
     Int compression_level
     Int bqsr_scatter
     Int preemptible_tries
-    String gatk_docker = "us.gcr.io/broad-gatk/gatk:4.0.10.1"
+    String gatk_docker = "gcr.io/arcus-jpe-pipe-stage-4f4279cc/gatk:4.0.10.1"
     Int memory_multiplier = 1
   }
 
@@ -319,7 +319,7 @@ task GatherBqsrReports {
     Array[File] input_bqsr_reports
     String output_report_filename
     Int preemptible_tries
-    String gatk_docker = "us.gcr.io/broad-gatk/gatk:4.0.10.1"
+    String gatk_docker = "gcr.io/arcus-jpe-pipe-stage-4f4279cc/gatk:4.0.10.1"
   }
 
   command {
@@ -361,7 +361,7 @@ task GatherSortedBamFiles {
       CREATE_MD5_FILE=true
     }
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3 GiB"
     disks: "local-disk " + disk_size + " HDD"
@@ -396,7 +396,7 @@ task GatherUnsortedBamFiles {
       CREATE_MD5_FILE=false
     }
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3 GiB"
     disks: "local-disk " + disk_size + " HDD"
@@ -449,7 +449,7 @@ task GenerateSubsettedContaminationResources {
     preemptible: preemptible_tries
     memory: "3.5 GiB"
     disks: "local-disk 10 HDD"
-    docker: "us.gcr.io/broad-gotc-prod/bedtools:2.27.1"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/bedtools:2.27.1"
   }
   output {
     File subsetted_contamination_ud = output_ud
@@ -532,7 +532,7 @@ task CheckContamination {
     preemptible: preemptible_tries
     memory: "7.5 GiB"
     disks: "local-disk " + disk_size + " HDD"
-    docker: "us.gcr.io/broad-gotc-prod/verify-bam-id:c1cba76e979904eb69c31520a0d7f5be63c72253-1553018888"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/verify-bam-id:c1cba76e979904eb69c31520a0d7f5be63c72253-1553018888"
     cpu: 2
   }
   output {

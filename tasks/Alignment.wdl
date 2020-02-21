@@ -29,7 +29,7 @@ task GetBwaVersion {
     sed 's/Version: //'
   }
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     memory: "1 GiB"
   }
   output {
@@ -115,7 +115,7 @@ task SamToFastqAndBwaMemAndMba {
     fi
   >>>
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "14 GiB"
     cpu: "16"
@@ -156,7 +156,7 @@ task SamSplitter {
     Array[File] split_bams = glob("output_dir/*.bam")
   }
   runtime {
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.3-1564508330"
+    docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3.75 GiB"
     disks: "local-disk " + disk_size + " HDD"
