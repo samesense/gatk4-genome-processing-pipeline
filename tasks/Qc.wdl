@@ -33,6 +33,7 @@ task CollectQualityYieldMetrics {
       OUTPUT=~{metrics_filename}
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     disks: "local-disk " + disk_size + " HDD"
     memory: "3 GiB"
@@ -71,6 +72,7 @@ task CollectUnsortedReadgroupBamQualityMetrics {
     touch ~{output_bam_prefix}.insert_size_histogram.pdf
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     memory: "7 GiB"
     disks: "local-disk " + disk_size + " HDD"
@@ -123,6 +125,7 @@ task CollectReadgroupBamQualityMetrics {
       METRIC_ACCUMULATION_LEVEL=READ_GROUP
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     memory: "7 GiB"
     disks: "local-disk " + disk_size + " HDD"
@@ -177,6 +180,7 @@ task CollectAggregationMetrics {
       METRIC_ACCUMULATION_LEVEL=LIBRARY
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     memory: "7 GiB"
     disks: "local-disk " + disk_size + " HDD"
@@ -227,6 +231,7 @@ task CrossCheckFingerprints {
       CROSSCHECK_BY=~{cross_check_by}
   >>>
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "2 GiB"
@@ -271,6 +276,7 @@ task CheckFingerprint {
 
   >>>
  runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3 GiB"
@@ -319,6 +325,7 @@ task CheckPreValidation {
 
   >>>
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/python:2.7"
@@ -365,6 +372,7 @@ task ValidateSamFile {
       IS_BISULFITE_SEQUENCED=false
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "~{memory_size} GiB"
@@ -404,6 +412,7 @@ task CollectWgsMetrics {
       READ_LENGTH=~{read_length}
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3 GiB"
@@ -447,6 +456,7 @@ task CollectRawWgsMetrics {
       READ_LENGTH=~{read_length}
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "~{memory_size} GiB"
@@ -494,6 +504,7 @@ task CollectHsMetrics {
   }
 
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "~{memory_size} GiB"
@@ -523,6 +534,7 @@ task CalculateReadGroupChecksum {
       OUTPUT=~{read_group_md5_filename}
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "2 GiB"
@@ -563,6 +575,7 @@ task ValidateVCF {
       --dbsnp ~{dbsnp_vcf}
   }
   runtime {
+    noAddress:true
     docker: gatk_docker
     preemptible: preemptible_tries
     memory: "7000 MiB"
@@ -597,6 +610,7 @@ task CollectVariantCallingMetrics {
       ~{true="GVCF_INPUT=true" false="" is_gvcf}
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3 GiB"

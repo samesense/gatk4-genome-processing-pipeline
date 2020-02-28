@@ -40,6 +40,7 @@ task SortSam {
 
   }
   runtime {
+    noAddress: true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     disks: "local-disk " + disk_size + " HDD"
     cpu: "1"
@@ -79,6 +80,7 @@ task SortSamSpark {
     samtools index ~{output_bam_basename}.bam ~{output_bam_basename}.bai
   }
   runtime {
+    noAddress: true
     docker: gatk_docker
     disks: "local-disk " + disk_size + " HDD"
     bootDiskSizeGb: "15"
@@ -135,6 +137,7 @@ task MarkDuplicates {
       ADD_PG_TAG_TO_READS=false
   }
   runtime {
+    noAddress: true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "~{memory_size} GiB"
@@ -190,6 +193,7 @@ task MarkDuplicatesSpark {
   >>>
 
   runtime {
+    noAddress: true
     docker: "jamesemery/gatknightly:gatkMasterSnapshot44ca2e9e84a"
     disks: "/mnt/tmp " + ceil(2.1 * total_input_size) + " LOCAL, local-disk " + disk_size + " HDD"
     bootDiskSizeGb: "50"
@@ -246,6 +250,7 @@ task BaseRecalibrator {
       -L ~{sep=" -L " sequence_group_interval}
   }
   runtime {
+    noAddress: true
     docker: gatk_docker
     preemptible: preemptible_tries
     memory: "6 GiB"
@@ -302,6 +307,7 @@ task ApplyBQSR {
       -L ~{sep=" -L " sequence_group_interval}
   }
   runtime {
+    noAddress: true
     docker: gatk_docker
     preemptible: preemptible_tries
     memory: "~{memory_size} MiB"
@@ -329,6 +335,7 @@ task GatherBqsrReports {
       -O ~{output_report_filename}
     }
   runtime {
+    noAddress: true
     docker: gatk_docker
     preemptible: preemptible_tries
     memory: "3500 MiB"
@@ -361,6 +368,7 @@ task GatherSortedBamFiles {
       CREATE_MD5_FILE=true
     }
   runtime {
+    noAddress: true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3 GiB"
@@ -396,6 +404,7 @@ task GatherUnsortedBamFiles {
       CREATE_MD5_FILE=false
     }
   runtime {
+    noAddress: true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3 GiB"
@@ -446,6 +455,7 @@ task GenerateSubsettedContaminationResources {
 
   >>>
   runtime {
+    noAddress: true
     preemptible: preemptible_tries
     memory: "3.5 GiB"
     disks: "local-disk 10 HDD"
@@ -529,6 +539,7 @@ task CheckContamination {
     CODE
   >>>
   runtime {
+    noAddress: true
     preemptible: preemptible_tries
     memory: "7.5 GiB"
     disks: "local-disk " + disk_size + " HDD"

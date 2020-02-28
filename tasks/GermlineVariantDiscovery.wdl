@@ -65,6 +65,7 @@ task HaplotypeCaller_GATK35_GVCF {
       --read_filter OverclippedRead
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "10 GiB"
@@ -127,6 +128,7 @@ task HaplotypeCaller_GATK4_VCF {
   >>>
 
   runtime {
+    noAddress:true
     docker: gatk_docker
     preemptible: preemptible_tries
     memory: "6.5 GiB"
@@ -161,6 +163,7 @@ task MergeVCFs {
       OUTPUT=~{output_vcf_name}
   }
   runtime {
+    noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
     memory: "3 GiB"
@@ -199,6 +202,7 @@ task HardFilterVcf {
       File output_vcf_index = "~{output_vcf_name}.tbi"
     }
   runtime {
+    noAddress:true
     docker: gatk_docker
     preemptible: preemptible_tries
     memory: "3 GiB"
@@ -248,6 +252,7 @@ task CNNScoreVariants {
   }
 
   runtime {
+    noAddress:true
     docker: gatk_docker
     preemptible: preemptible_tries
     memory: "15 GiB"
@@ -305,6 +310,7 @@ task FilterVariantTranches {
   }
 
   runtime {
+    noAddress:true
     memory: "7 GiB"
     cpu: "2"
     disks: "local-disk " + disk_size + " HDD"
