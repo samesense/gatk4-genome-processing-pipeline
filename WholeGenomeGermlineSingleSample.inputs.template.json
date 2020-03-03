@@ -9,8 +9,8 @@
   },
 
   "WholeGenomeGermlineSingleSample.references": {
-    #"fingerprint_genotypes_file": "gs://arcus-jpe-pipe-stage-storage/data/raw/broad-gotc-test-storage/single_sample/plumbing/bams/20k/NA12878_PLUMBING.hg38.reference.fingerprint.vcf.gz",
-    #"fingerprint_genotypes_index": "gs://arcus-jpe-pipe-stage-storage/data/raw/broad-gotc-test-storage/single_sample/plumbing/bams/20k/NA12878_PLUMBING.hg38.reference.fingerprint.vcf.gz.tbi",
+    "#fingerprint_genotypes_file": "gs://arcus-jpe-pipe-stage-storage/data/raw/broad-gotc-test-storage/single_sample/plumbing/bams/20k/NA12878_PLUMBING.hg38.reference.fingerprint.vcf.gz",
+    "#fingerprint_genotypes_index": "gs://arcus-jpe-pipe-stage-storage/data/raw/broad-gotc-test-storage/single_sample/plumbing/bams/20k/NA12878_PLUMBING.hg38.reference.fingerprint.vcf.gz.tbi",
     "contamination_sites_ud": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/contamination-resources/1000g/1000g.phase3.100k.b38.vcf.gz.dat.UD",
     "contamination_sites_bed": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/contamination-resources/1000g/1000g.phase3.100k.b38.vcf.gz.dat.bed",
     "contamination_sites_mu": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/contamination-resources/1000g/1000g.phase3.100k.b38.vcf.gz.dat.mu",
