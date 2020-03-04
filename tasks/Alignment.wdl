@@ -17,7 +17,7 @@ version 1.0
 
 #import "../structs/GermlineStructs.wdl"
 
-import "https://raw.githubusercontent.com/gatk-workflows/gatk4-genome-processing-pipeline/1.0.0/structs/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/structs/GermlineStructs.wdl"
 
 # Get version of BWA
 task GetBwaVersion {
