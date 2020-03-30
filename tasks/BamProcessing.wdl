@@ -493,7 +493,7 @@ task CheckContamination {
     String output_prefix
     Int preemptible_tries
     Float contamination_underestimation_factor
-    Boolean disable_sanity_check = false
+    Boolean disable_sanity_check = true
   }
 
   Int disk_size = ceil(size(input_bam, "GiB") + size(ref_fasta, "GiB")) + 30
