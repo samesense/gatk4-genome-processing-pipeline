@@ -46,6 +46,7 @@ task SortSam {
     cpu: "1"
     memory: "5000 MiB"
     preemptible: preemptible_tries
+    maxRetries: 3
   }
   output {
     File output_bam = "~{output_bam_basename}.bam"
