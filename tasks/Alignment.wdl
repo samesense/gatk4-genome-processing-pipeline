@@ -107,8 +107,8 @@ task SamToFastqAndBwaMemAndMba {
         UNMAP_CONTAMINANT_READS=true \
         ADD_PG_TAG_TO_READS=false
 
-      grep -m1 "read .* ALT contigs" ~{output_bam_basename}.bwa.stderr.log | \
-      grep -v "read 0 ALT contigs"
+      grep -m1 "read .* ALT contigs" ~{output_bam_basename}.bwa.stderr.log
+      #grep -v "read 0 ALT contigs"
 
     # else reference_fasta.ref_alt is empty or could not be found
     else
