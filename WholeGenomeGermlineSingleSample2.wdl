@@ -48,7 +48,7 @@ workflow WholeGenomeGermlineSingleSample2 {
   String pipeline_version = "1.3"
 
   input {
-    File MarkDuplicates_output_bam 
+    File sample_and_unmapped_bams
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
     File wgs_coverage_interval_list

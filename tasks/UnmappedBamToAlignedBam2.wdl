@@ -34,7 +34,7 @@ import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipe
 workflow UnmappedBamToAlignedBam {
 
   input {
-    File MarkDuplicates_output_bam
+    SampleAndUnmappedBams sample_and_unmapped_bams
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
 
@@ -63,7 +63,7 @@ workflow UnmappedBamToAlignedBam {
   # Sort aggregated+deduped BAM file and fix tags
   call Processing.SortSam as SortSampleBam {
     input:
-      input_bam = MarkDuplicates_output_bam,
+      input_bam = sample_and_unmapped_bams.MarkDuplicates_output_bam,
       output_bam_basename = sample_and_unmapped_bams.base_file_name + ".aligned.duplicate_marked.sorted",
       compression_level = compression_level,
       preemptible_tries = 0
