@@ -8,6 +8,15 @@ struct SampleAndUnmappedBams {
   String unmapped_bam_suffix
 }
 
+struct SampleAndDedupBams {
+  String base_file_name
+  String final_gvcf_base_name
+  File MarkDuplicates_output_bam
+  String sample_name
+  String unmapped_bam_suffix
+}
+
+
 struct ReferenceFasta {
   File ref_dict
   File ref_fasta

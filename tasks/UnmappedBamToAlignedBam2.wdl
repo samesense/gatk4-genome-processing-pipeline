@@ -34,7 +34,7 @@ import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipe
 workflow UnmappedBamToAlignedBam {
 
   input {
-    SampleAndUnmappedBams sample_and_unmapped_bams
+    SampleAndDedupBams sample_and_unmapped_bams
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
 

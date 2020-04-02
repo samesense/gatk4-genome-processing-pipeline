@@ -48,7 +48,7 @@ workflow WholeGenomeGermlineSingleSample2 {
   String pipeline_version = "1.3"
 
   input {
-    File sample_and_unmapped_bams
+    SampleAndDedupBams sample_and_unmapped_bams
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
     File wgs_coverage_interval_list
@@ -66,7 +66,7 @@ workflow WholeGenomeGermlineSingleSample2 {
 
 call ToBam2.UnmappedBamToAlignedBam {
     input:
-      MarkDuplicates_output_bam   = MarkDuplicates_output_bam,
+      sample_and_unmapped_bams    = sample_and_unmapped_bams
       references                  = references,
       papi_settings               = papi_settings,
 
