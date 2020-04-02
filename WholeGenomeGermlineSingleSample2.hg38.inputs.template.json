@@ -1,5 +1,5 @@
 {
-  "WholeGenomeGermlineSingleSample.sample_and_unmapped_bams": {
+  "WholeGenomeGermlineSingleSample2.sample_and_unmapped_bams": {
     "sample_name": "",
     "base_file_name": "",
     "MarkDuplicates_output_bam": "",
@@ -7,7 +7,7 @@
     "unmapped_bam_suffix": ".bam"
   },
 
-  "WholeGenomeGermlineSingleSample.references": {
+  "WholeGenomeGermlineSingleSample2.references": {
     "#fingerprint_genotypes_file": "gs://arcus-jpe-pipe-stage-storage/data/raw/broad-gotc-test-storage/single_sample/plumbing/bams/20k/NA12878_PLUMBING.hg38.reference.fingerprint.vcf.gz",
     "#fingerprint_genotypes_index": "gs://arcus-jpe-pipe-stage-storage/data/raw/broad-gotc-test-storage/single_sample/plumbing/bams/20k/NA12878_PLUMBING.hg38.reference.fingerprint.vcf.gz.tbi",
     "contamination_sites_ud": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/contamination-resources/1000g/1000g.phase3.100k.b38.vcf.gz.dat.UD",
@@ -40,10 +40,10 @@
     "evaluation_interval_list": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/wgs_evaluation_regions.hg38.interval_list"
   },
 
-  "WholeGenomeGermlineSingleSample.wgs_coverage_interval_list": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/wgs_coverage_regions.hg38.interval_list",
-  "WholeGenomeGermlineSingleSample.haplotype_database_file": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.haplotype_database.txt",
+  "WholeGenomeGermlineSingleSample2.wgs_coverage_interval_list": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/wgs_coverage_regions.hg38.interval_list",
+  "WholeGenomeGermlineSingleSample2.haplotype_database_file": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.haplotype_database.txt",
 
-  "WholeGenomeGermlineSingleSample.papi_settings": {
+  "WholeGenomeGermlineSingleSample2.papi_settings": {
     "preemptible_tries": 0,
     "agg_preemptible_tries":0
   }
