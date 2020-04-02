@@ -35,7 +35,6 @@ version 1.0
 #import "./tasks/VariantCalling.wdl" as ToGvcf
 #import "./structs/GermlineStructs.wdl"
 
-import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/UnmappedBamToAlignedBam1.wdl" as ToBam1
 import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/UnmappedBamToAlignedBam2.wdl" as ToBam2
 import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/AggregatedBamQC.wdl" as AggregatedQC
 import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/Qc.wdl" as QC
@@ -44,12 +43,12 @@ import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipe
 import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/structs/GermlineStructs.wdl"
 
 # WORKFLOW DEFINITION
-workflow WholeGenomeGermlineSingleSample {
+workflow WholeGenomeGermlineSingleSample2 {
 
   String pipeline_version = "1.3"
 
   input {
-    SampleAndUnmappedBams sample_and_unmapped_bams
+    File MarkDuplicates_output_bam 
     GermlineSingleSampleReferences references
     PapiSettings papi_settings
     File wgs_coverage_interval_list
@@ -65,25 +64,9 @@ workflow WholeGenomeGermlineSingleSample {
   String cross_check_fingerprints_by = "READGROUP"
   String recalibrated_bam_basename = sample_and_unmapped_bams.base_file_name + ".aligned.duplicates_marked.recalibrated"
 
-  call ToBam1.UnmappedBamToAlignedBam {
-    input:
-      sample_and_unmapped_bams    = sample_and_unmapped_bams,
-      references                  = references,
-      papi_settings               = papi_settings,
-
-      contamination_sites_ud = references.contamination_sites_ud,
-      contamination_sites_bed = references.contamination_sites_bed,
-      contamination_sites_mu = references.contamination_sites_mu,
-
-      cross_check_fingerprints_by = cross_check_fingerprints_by,
-      haplotype_database_file     = haplotype_database_file,
-      lod_threshold               = lod_threshold,
-      recalibrated_bam_basename   = recalibrated_bam_basename
-  }
-
 call ToBam2.UnmappedBamToAlignedBam {
     input:
-      sample_and_unmapped_bams    = sample_and_unmapped_bams,
+      MarkDuplicates_output_bam   = MarkDuplicates_output_bam,
       references                  = references,
       papi_settings               = papi_settings,
 
@@ -173,17 +156,6 @@ call ToBam2.UnmappedBamToAlignedBam {
 
   # Outputs that will be retained when execution is complete
   output {
-    Array[File] quality_yield_metrics = UnmappedBamToAlignedBam.quality_yield_metrics
-
-    Array[File] unsorted_read_group_base_distribution_by_cycle_pdf = UnmappedBamToAlignedBam.unsorted_read_group_base_distribution_by_cycle_pdf
-    Array[File] unsorted_read_group_base_distribution_by_cycle_metrics = UnmappedBamToAlignedBam.unsorted_read_group_base_distribution_by_cycle_metrics
-    Array[File] unsorted_read_group_insert_size_histogram_pdf = UnmappedBamToAlignedBam.unsorted_read_group_insert_size_histogram_pdf
-    Array[File] unsorted_read_group_insert_size_metrics = UnmappedBamToAlignedBam.unsorted_read_group_insert_size_metrics
-    Array[File] unsorted_read_group_quality_by_cycle_pdf = UnmappedBamToAlignedBam.unsorted_read_group_quality_by_cycle_pdf
-    Array[File] unsorted_read_group_quality_by_cycle_metrics = UnmappedBamToAlignedBam.unsorted_read_group_quality_by_cycle_metrics
-    Array[File] unsorted_read_group_quality_distribution_pdf = UnmappedBamToAlignedBam.unsorted_read_group_quality_distribution_pdf
-    Array[File] unsorted_read_group_quality_distribution_metrics = UnmappedBamToAlignedBam.unsorted_read_group_quality_distribution_metrics
-
     File read_group_alignment_summary_metrics = AggregatedBamQC.read_group_alignment_summary_metrics
     File read_group_gc_bias_detail_metrics = AggregatedBamQC.read_group_gc_bias_detail_metrics
     File read_group_gc_bias_pdf = AggregatedBamQC.read_group_gc_bias_pdf
@@ -216,7 +188,6 @@ call ToBam2.UnmappedBamToAlignedBam {
     File wgs_metrics = CollectWgsMetrics.metrics
     File raw_wgs_metrics = CollectRawWgsMetrics.metrics
 
-    File duplicate_metrics = UnmappedBamToAlignedBam.duplicate_metrics
     File output_bqsr_reports = UnmappedBamToAlignedBam.output_bqsr_reports
 
     File gvcf_summary_metrics = BamToGvcf.vcf_summary_metrics
