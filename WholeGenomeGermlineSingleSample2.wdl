@@ -66,7 +66,7 @@ workflow WholeGenomeGermlineSingleSample2 {
 
 call ToBam2.UnmappedBamToAlignedBam {
     input:
-      sample_and_unmapped_bams    = sample_and_unmapped_bams
+      sample_and_unmapped_bams    = sample_and_unmapped_bams,
       references                  = references,
       papi_settings               = papi_settings,
 
