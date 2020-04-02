@@ -3,6 +3,7 @@
     "sample_name": "",
     "base_file_name": "",
     "MarkDuplicates_output_bam": "",
+    "duplicate_metrics": "",
     "final_gvcf_base_name": "",
     "unmapped_bam_suffix": ".bam"
   },

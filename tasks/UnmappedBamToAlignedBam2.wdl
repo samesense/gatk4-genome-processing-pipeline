@@ -182,5 +182,6 @@ workflow UnmappedBamToAlignedBam {
 
     File output_bam = GatherBamFiles.output_bam
     File output_bam_index = GatherBamFiles.output_bam_index
+    File duplicate_metrics =  sample_and_unmapped_bams.duplicate_metrics
   }
 }
