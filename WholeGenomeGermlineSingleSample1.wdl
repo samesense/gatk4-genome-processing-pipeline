@@ -80,22 +80,6 @@ workflow WholeGenomeGermlineSingleSample1 {
       recalibrated_bam_basename   = recalibrated_bam_basename
   }
 
-call ToBam2.UnmappedBamToAlignedBam {
-    input:
-      sample_and_unmapped_bams    = sample_and_unmapped_bams,
-      references                  = references,
-      papi_settings               = papi_settings,
-
-      contamination_sites_ud = references.contamination_sites_ud,
-      contamination_sites_bed = references.contamination_sites_bed,
-      contamination_sites_mu = references.contamination_sites_mu,
-
-      cross_check_fingerprints_by = cross_check_fingerprints_by,
-      haplotype_database_file     = haplotype_database_file,
-      lod_threshold               = lod_threshold,
-      recalibrated_bam_basename   = recalibrated_bam_basename
-  }
-
   call AggregatedQC.AggregatedBamQC {
     input:
       base_recalibrated_bam = UnmappedBamToAlignedBam.output_bam,
@@ -106,18 +90,6 @@ call ToBam2.UnmappedBamToAlignedBam {
       haplotype_database_file = haplotype_database_file,
       references = references,
       papi_settings = papi_settings
-  }
-
-  call ToCram.BamToCram as BamToCram {
-    input:
-      input_bam = UnmappedBamToAlignedBam.output_bam,
-      ref_fasta = references.reference_fasta.ref_fasta,
-      ref_fasta_index = references.reference_fasta.ref_fasta_index,
-      ref_dict = references.reference_fasta.ref_dict,
-      duplication_metrics = UnmappedBamToAlignedBam.duplicate_metrics,
-      chimerism_metrics = AggregatedBamQC.agg_alignment_summary_metrics,
-      base_file_name = sample_and_unmapped_bams.base_file_name,
-      agg_preemptible_tries = papi_settings.agg_preemptible_tries
   }
 
   # QC the sample WGS metrics (stringent thresholds)
