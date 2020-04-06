@@ -166,7 +166,6 @@ call ToBam2.UnmappedBamToAlignedBam {
 
   if (provide_bam_output) {
     File provided_output_bam = UnmappedBamToAlignedBam.output_bam
-    File provided_output_bam_index = UnmappedBamToAlignedBam.output_bam_index
   }
 
   # Outputs that will be retained when execution is complete
@@ -182,54 +181,8 @@ call ToBam2.UnmappedBamToAlignedBam {
     Array[File] unsorted_read_group_quality_distribution_pdf = UnmappedBamToAlignedBam.unsorted_read_group_quality_distribution_pdf
     Array[File] unsorted_read_group_quality_distribution_metrics = UnmappedBamToAlignedBam.unsorted_read_group_quality_distribution_metrics
 
-    File read_group_alignment_summary_metrics = AggregatedBamQC.read_group_alignment_summary_metrics
-    File read_group_gc_bias_detail_metrics = AggregatedBamQC.read_group_gc_bias_detail_metrics
-    File read_group_gc_bias_pdf = AggregatedBamQC.read_group_gc_bias_pdf
-    File read_group_gc_bias_summary_metrics = AggregatedBamQC.read_group_gc_bias_summary_metrics
-
-    File? cross_check_fingerprints_metrics = UnmappedBamToAlignedBam.cross_check_fingerprints_metrics
-
-    File selfSM = UnmappedBamToAlignedBam.selfSM
-    Float contamination = UnmappedBamToAlignedBam.contamination
-
-    File calculate_read_group_checksum_md5 = AggregatedBamQC.calculate_read_group_checksum_md5
-
-    File agg_alignment_summary_metrics = AggregatedBamQC.agg_alignment_summary_metrics
-    File agg_bait_bias_detail_metrics = AggregatedBamQC.agg_bait_bias_detail_metrics
-    File agg_bait_bias_summary_metrics = AggregatedBamQC.agg_bait_bias_summary_metrics
-    File agg_gc_bias_detail_metrics = AggregatedBamQC.agg_gc_bias_detail_metrics
-    File agg_gc_bias_pdf = AggregatedBamQC.agg_gc_bias_pdf
-    File agg_gc_bias_summary_metrics = AggregatedBamQC.agg_gc_bias_summary_metrics
-    File agg_insert_size_histogram_pdf = AggregatedBamQC.agg_insert_size_histogram_pdf
-    File agg_insert_size_metrics = AggregatedBamQC.agg_insert_size_metrics
-    File agg_pre_adapter_detail_metrics = AggregatedBamQC.agg_pre_adapter_detail_metrics
-    File agg_pre_adapter_summary_metrics = AggregatedBamQC.agg_pre_adapter_summary_metrics
-    File agg_quality_distribution_pdf = AggregatedBamQC.agg_quality_distribution_pdf
-    File agg_quality_distribution_metrics = AggregatedBamQC.agg_quality_distribution_metrics
-    File agg_error_summary_metrics = AggregatedBamQC.agg_error_summary_metrics
-
-    File? fingerprint_summary_metrics = AggregatedBamQC.fingerprint_summary_metrics
-    File? fingerprint_detail_metrics = AggregatedBamQC.fingerprint_detail_metrics
-
-    File wgs_metrics = CollectWgsMetrics.metrics
-    File raw_wgs_metrics = CollectRawWgsMetrics.metrics
-
     File duplicate_metrics = UnmappedBamToAlignedBam.duplicate_metrics
-    File output_bqsr_reports = UnmappedBamToAlignedBam.output_bqsr_reports
-
-    File gvcf_summary_metrics = BamToGvcf.vcf_summary_metrics
-    File gvcf_detail_metrics = BamToGvcf.vcf_detail_metrics
 
     File? output_bam = provided_output_bam
-    File? output_bam_index = provided_output_bam_index
-
-    File output_cram = BamToCram.output_cram
-    File output_cram_index = BamToCram.output_cram_index
-    File output_cram_md5 = BamToCram.output_cram_md5
-
-    File validate_cram_file_report = BamToCram.validate_cram_file_report
-
-    File output_vcf = BamToGvcf.output_vcf
-    File output_vcf_index = BamToGvcf.output_vcf_index
   }
 }
