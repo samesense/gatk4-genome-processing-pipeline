@@ -80,82 +80,9 @@ workflow WholeGenomeGermlineSingleSample1 {
       recalibrated_bam_basename   = recalibrated_bam_basename
   }
 
-  call AggregatedQC.AggregatedBamQC {
-    input:
-      base_recalibrated_bam = UnmappedBamToAlignedBam.output_bam,
-      base_recalibrated_bam_index = UnmappedBamToAlignedBam.output_bam_index,
-      base_name = sample_and_unmapped_bams.base_file_name,
-      sample_name = sample_and_unmapped_bams.sample_name,
-      recalibrated_bam_base_name = recalibrated_bam_basename,
-      haplotype_database_file = haplotype_database_file,
-      references = references,
-      papi_settings = papi_settings
-  }
-
-  # QC the sample WGS metrics (stringent thresholds)
-  call QC.CollectWgsMetrics as CollectWgsMetrics {
-    input:
-      input_bam = UnmappedBamToAlignedBam.output_bam,
-      input_bam_index = UnmappedBamToAlignedBam.output_bam_index,
-      metrics_filename = sample_and_unmapped_bams.base_file_name + ".wgs_metrics",
-      ref_fasta = references.reference_fasta.ref_fasta,
-      ref_fasta_index = references.reference_fasta.ref_fasta_index,
-      wgs_coverage_interval_list = wgs_coverage_interval_list,
-      read_length = read_length,
-      preemptible_tries = papi_settings.agg_preemptible_tries
-  }
-
-  # QC the sample raw WGS metrics (common thresholds)
-  call QC.CollectRawWgsMetrics as CollectRawWgsMetrics {
-    input:
-      input_bam = UnmappedBamToAlignedBam.output_bam,
-      input_bam_index = UnmappedBamToAlignedBam.output_bam_index,
-      metrics_filename = sample_and_unmapped_bams.base_file_name + ".raw_wgs_metrics",
-      ref_fasta = references.reference_fasta.ref_fasta,
-      ref_fasta_index = references.reference_fasta.ref_fasta_index,
-      wgs_coverage_interval_list = wgs_coverage_interval_list,
-      read_length = read_length,
-      preemptible_tries = papi_settings.agg_preemptible_tries
-  }
-
-  call ToGvcf.VariantCalling as BamToGvcf {
-    input:
-      calling_interval_list = references.calling_interval_list,
-      evaluation_interval_list = references.evaluation_interval_list,
-      haplotype_scatter_count = references.haplotype_scatter_count,
-      break_bands_at_multiples_of = references.break_bands_at_multiples_of,
-      contamination = UnmappedBamToAlignedBam.contamination,
-      input_bam = UnmappedBamToAlignedBam.output_bam,
-      ref_fasta = references.reference_fasta.ref_fasta,
-      ref_fasta_index = references.reference_fasta.ref_fasta_index,
-      ref_dict = references.reference_fasta.ref_dict,
-      dbsnp_vcf = references.dbsnp_vcf,
-      dbsnp_vcf_index = references.dbsnp_vcf_index,
-      base_file_name = sample_and_unmapped_bams.base_file_name,
-      final_vcf_base_name = sample_and_unmapped_bams.final_gvcf_base_name,
-      agg_preemptible_tries = papi_settings.agg_preemptible_tries,
-      use_gatk3_haplotype_caller = use_gatk3_haplotype_caller
-  }
-
-  if (provide_bam_output) {
-    File provided_output_bam = UnmappedBamToAlignedBam.output_bam
-  }
-
   # Outputs that will be retained when execution is complete
   output {
-    Array[File] quality_yield_metrics = UnmappedBamToAlignedBam.quality_yield_metrics
-
-    Array[File] unsorted_read_group_base_distribution_by_cycle_pdf = UnmappedBamToAlignedBam.unsorted_read_group_base_distribution_by_cycle_pdf
-    Array[File] unsorted_read_group_base_distribution_by_cycle_metrics = UnmappedBamToAlignedBam.unsorted_read_group_base_distribution_by_cycle_metrics
-    Array[File] unsorted_read_group_insert_size_histogram_pdf = UnmappedBamToAlignedBam.unsorted_read_group_insert_size_histogram_pdf
-    Array[File] unsorted_read_group_insert_size_metrics = UnmappedBamToAlignedBam.unsorted_read_group_insert_size_metrics
-    Array[File] unsorted_read_group_quality_by_cycle_pdf = UnmappedBamToAlignedBam.unsorted_read_group_quality_by_cycle_pdf
-    Array[File] unsorted_read_group_quality_by_cycle_metrics = UnmappedBamToAlignedBam.unsorted_read_group_quality_by_cycle_metrics
-    Array[File] unsorted_read_group_quality_distribution_pdf = UnmappedBamToAlignedBam.unsorted_read_group_quality_distribution_pdf
-    Array[File] unsorted_read_group_quality_distribution_metrics = UnmappedBamToAlignedBam.unsorted_read_group_quality_distribution_metrics
-
     File duplicate_metrics = UnmappedBamToAlignedBam.duplicate_metrics
-
-    File? output_bam = provided_output_bam
+    File output_bam = UnmappedBamToAlignedBam.output_bam
   }
 }
