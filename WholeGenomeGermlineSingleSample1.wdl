@@ -28,7 +28,7 @@ version 1.0
 ## page at https://hub.docker.com/r/broadinstitute/genomes-in-the-cloud/ for detailed
 ## licensing information pertaining to the included programs.
 
-import "./tasks/UnmappedBamToAlignedBam1.wdl" as ToBam
+import "./tasks/UnmappedBamToAlignedBam1.wdl" as ToBam1
 import "./tasks/AggregatedBamQC.wdl" as AggregatedQC
 import "./tasks/Qc.wdl" as QC
 import "./tasks/BamToCram.wdl" as ToCram
