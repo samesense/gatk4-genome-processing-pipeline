@@ -107,6 +107,7 @@ workflow VariantCalling {
   String merge_suffix = if make_gvcf then ".g.vcf.gz" else ".vcf.gz"
   call Calling.MergeVCFs as MergeVCFs {
     input:
+      cp_lfs = "gs://arcus-jpe-pipe-stage-storage/src/scripts/cp-lfs",
       input_vcfs = vcfs_to_merge,
       input_vcfs_indexes = vcf_indices_to_merge,
       output_vcf_name = final_vcf_base_name + merge_suffix,
@@ -154,6 +155,7 @@ workflow VariantCalling {
     File vcf_summary_metrics = CollectVariantCallingMetrics.summary_metrics
     File vcf_detail_metrics = CollectVariantCallingMetrics.detail_metrics
     File output_vcf = MergeVCFs.output_vcf
+    File output_vcf_pointer = MergeVCFs.output_vcf_pointer
     File output_vcf_index = MergeVCFs.output_vcf_index
     File? bamout = MergeBamouts.output_bam
     File? bamout_index = MergeBamouts.output_bam_index

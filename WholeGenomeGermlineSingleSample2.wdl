@@ -197,6 +197,7 @@ call ToBam2.UnmappedBamToAlignedBam {
     File? output_bam_index = provided_output_bam_index
 
     File output_cram = BamToCram.output_cram
+    File output_cram_cas_pointer = BamToCram.output_cram_cas_pointer
     File output_cram_index = BamToCram.output_cram_index
     File output_cram_md5 = BamToCram.output_cram_md5
 
@@ -204,5 +205,6 @@ call ToBam2.UnmappedBamToAlignedBam {
 
     File output_vcf = BamToGvcf.output_vcf
     File output_vcf_index = BamToGvcf.output_vcf_index
+    File output_vcf_index = BamToGvcf.output_vcf_pointer
   }
 }

@@ -146,6 +146,7 @@ task HaplotypeCaller_GATK4_VCF {
 # Combine multiple VCFs or GVCFs from scattered HaplotypeCaller runs
 task MergeVCFs {
   input {
+    File cp_lfs
     Array[File] input_vcfs
     Array[File] input_vcfs_indexes
     String output_vcf_name
@@ -160,7 +161,7 @@ task MergeVCFs {
     java -Xms2000m -jar /usr/gitc/picard.jar \
       MergeVcfs \
       INPUT=~{sep=' INPUT=' input_vcfs} \
-      OUTPUT=~{output_vcf_name}
+      OUTPUT=~{output_vcf_name}; chmod +x ~{cp_lfs}; ~{cp_lfs} -cas.addr https://cas.arcus.chop.edu -cas.upload -cas.tls.verify=false ~{output_vcf_name} ~{output_vcf_name}.pointer
   }
   runtime {
     noAddress:true
@@ -171,6 +172,7 @@ task MergeVCFs {
   }
   output {
     File output_vcf = "~{output_vcf_name}"
+    File output_vcf_pointer = "~{output_vcf_name}.pointer"
     File output_vcf_index = "~{output_vcf_name}.tbi"
   }
 }

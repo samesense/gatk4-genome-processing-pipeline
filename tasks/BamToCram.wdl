@@ -28,6 +28,7 @@ workflow BamToCram {
   # Convert the final merged recalibrated BAM file to CRAM format
   call Utils.ConvertToCram as ConvertToCram {
     input:
+      cp_lfs = "gs://arcus-jpe-pipe-stage-storage/src/scripts/cp-lfs",
       input_bam = input_bam,
       ref_fasta = ref_fasta,
       ref_fasta_index = ref_fasta_index,
@@ -62,6 +63,7 @@ workflow BamToCram {
 
   output {
      File output_cram = ConvertToCram.output_cram
+     File output_cram = ConvertToCram.output_cram_cas_pointer
      File output_cram_index = ConvertToCram.output_cram_index
      File output_cram_md5 = ConvertToCram.output_cram_md5
      File validate_cram_file_report = ValidateCram.report

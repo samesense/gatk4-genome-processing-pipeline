@@ -121,6 +121,7 @@ task ScatterIntervalList {
 # Note that reading CRAMs directly with Picard is not yet supported
 task ConvertToCram {
   input {
+    File cp_lfs
     File input_bam
     File ref_fasta
     File ref_fasta_index
@@ -145,6 +146,9 @@ task ConvertToCram {
     export REF_CACHE=./ref/cache/%2s/%2s/%s
 
     samtools index ~{output_basename}.cram
+    chmod +x ~{cp_lfs}
+    ~{cp_lfs} -cas.addr https://cas.arcus.chop.edu -cas.upload -cas.tls.verify=false ~{output_basename}.cram ~{output_basename}.cram.pointer
+
   >>>
   runtime {
     noAddress:true
@@ -156,6 +160,7 @@ task ConvertToCram {
   }
   output {
     File output_cram = "~{output_basename}.cram"
+    File output_cram_cas_pointer = "~{output_basename}.cram.pointer"
     File output_cram_index = "~{output_basename}.cram.crai"
     File output_cram_md5 = "~{output_basename}.cram.md5"
   }
