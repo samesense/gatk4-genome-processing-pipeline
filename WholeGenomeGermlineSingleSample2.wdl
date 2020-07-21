@@ -205,6 +205,6 @@ call ToBam2.UnmappedBamToAlignedBam {
 
     File output_vcf = BamToGvcf.output_vcf
     File output_vcf_index = BamToGvcf.output_vcf_index
-    File output_vcf_index = BamToGvcf.output_vcf_pointer
+    File output_vcf_pointer = BamToGvcf.output_vcf_pointer
   }
 }

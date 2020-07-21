@@ -63,7 +63,7 @@ workflow BamToCram {
 
   output {
      File output_cram = ConvertToCram.output_cram
-     File output_cram = ConvertToCram.output_cram_cas_pointer
+     File output_cram_cas_pointer = ConvertToCram.output_cram_cas_pointer
      File output_cram_index = ConvertToCram.output_cram_index
      File output_cram_md5 = ConvertToCram.output_cram_md5
      File validate_cram_file_report = ValidateCram.report
