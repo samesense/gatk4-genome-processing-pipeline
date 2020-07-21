@@ -25,11 +25,11 @@ task SortSam {
   }
   # SortSam spills to disk a lot more because we are only store 300000 records in RAM now because its faster for our data so it needs
   # more disk space.  Also it spills to disk in an uncompressed format so we need to account for that with a larger multiplier
-  Float sort_sam_disk_multiplier = 4.25
+  Float sort_sam_disk_multiplier = 7.25
   Int disk_size = ceil(sort_sam_disk_multiplier * size(input_bam, "GiB")) + 20
 
   command {
-    java -Dsamjdk.compression_level=~{compression_level} -Xms4000m -jar /usr/gitc/picard.jar \
+    java -Dsamjdk.compression_level=~{compression_level} -Xms15000m -jar /usr/gitc/picard.jar \
       SortSam \
       INPUT=~{input_bam} \
       OUTPUT=~{output_bam_basename}.bam \
@@ -44,9 +44,9 @@ task SortSam {
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     disks: "local-disk " + disk_size + " HDD"
     cpu: "1"
-    memory: "5000 MiB"
-    preemptible: preemptible_tries
-    maxRetries: 3
+    memory: "16000 MiB"
+    preemptible: 0 
+    maxRetries: 0
   }
   output {
     File output_bam = "~{output_bam_basename}.bam"

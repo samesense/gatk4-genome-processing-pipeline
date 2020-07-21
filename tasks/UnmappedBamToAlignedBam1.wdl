@@ -23,12 +23,12 @@ import "./BamProcessing.wdl" as Processing
 import "./Utilities.wdl" as Utils
 import "../structs/GermlineStructs.wdl" as Structs
 
- # import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/Alignment.wdl" as Alignment
- # import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/SplitLargeReadGroup.wdl" as SplitRG
- # import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/Qc.wdl" as QC
- # import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/BamProcessing.wdl" as Processing
- # import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/Utilities.wdl" as Utils
- # import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/structs/GermlineStructs.wdl" as Structs
+# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/Alignment.wdl" as Alignment
+# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/SplitLargeReadGroup.wdl" as SplitRG
+# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/Qc.wdl" as QC
+# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/BamProcessing.wdl" as Processing
+# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/Utilities.wdl" as Utils
+# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/structs/GermlineStructs.wdl" as Structs
 
 # WORKFLOW DEFINITION
 workflow UnmappedBamToAlignedBam {
@@ -142,117 +142,6 @@ workflow UnmappedBamToAlignedBam {
       preemptible_tries = if data_too_large_for_preemptibles then 0 else papi_settings.agg_preemptible_tries
   }
 
-  # Sort aggregated+deduped BAM file and fix tags
-  call Processing.SortSam as SortSampleBam {
-    input:
-      input_bam = MarkDuplicates.output_bam,
-      output_bam_basename = sample_and_unmapped_bams.base_file_name + ".aligned.duplicate_marked.sorted",
-      compression_level = compression_level,
-      preemptible_tries = if data_too_large_for_preemptibles then 0 else papi_settings.agg_preemptible_tries
-  }
-
-  Float agg_bam_size = size(SortSampleBam.output_bam, "GiB")
-
-  if (defined(haplotype_database_file)) {
-    # Check identity of fingerprints across readgroups
-    call QC.CrossCheckFingerprints as CrossCheckFingerprints {
-      input:
-        input_bams = [ SortSampleBam.output_bam ],
-        input_bam_indexes = [SortSampleBam.output_bam_index],
-        haplotype_database_file = haplotype_database_file,
-        metrics_filename = sample_and_unmapped_bams.base_file_name + ".crosscheck",
-        total_input_size = agg_bam_size,
-        lod_threshold = lod_threshold,
-        cross_check_by = cross_check_fingerprints_by,
-        preemptible_tries = papi_settings.agg_preemptible_tries
-    }
-  }
-
-  # Create list of sequences for scatter-gather parallelization
-  call Utils.CreateSequenceGroupingTSV as CreateSequenceGroupingTSV {
-    input:
-      ref_dict = references.reference_fasta.ref_dict,
-      preemptible_tries = papi_settings.preemptible_tries
-  }
-
-  # Estimate level of cross-sample contamination
-  call Processing.CheckContamination as CheckContamination {
-    input:
-      input_bam = SortSampleBam.output_bam,
-      input_bam_index = SortSampleBam.output_bam_index,
-      contamination_sites_ud = contamination_sites_ud,
-      contamination_sites_bed = contamination_sites_bed,
-      contamination_sites_mu = contamination_sites_mu,
-      ref_fasta = references.reference_fasta.ref_fasta,
-      ref_fasta_index = references.reference_fasta.ref_fasta_index,
-      output_prefix = sample_and_unmapped_bams.base_file_name + ".preBqsr",
-      preemptible_tries = papi_settings.agg_preemptible_tries,
-      contamination_underestimation_factor = 0.75
-  }
-
-  # We need disk to localize the sharded input and output due to the scatter for BQSR.
-  # If we take the number we are scattering by and reduce by 3 we will have enough disk space
-  # to account for the fact that the data is not split evenly.
-  Int num_of_bqsr_scatters = length(CreateSequenceGroupingTSV.sequence_grouping)
-  Int potential_bqsr_divisor = num_of_bqsr_scatters - 10
-  Int bqsr_divisor = if potential_bqsr_divisor > 1 then potential_bqsr_divisor else 1
-
-  # Perform Base Quality Score Recalibration (BQSR) on the sorted BAM in parallel
-  scatter (subgroup in CreateSequenceGroupingTSV.sequence_grouping) {
-    # Generate the recalibration model by interval
-    call Processing.BaseRecalibrator as BaseRecalibrator {
-      input:
-        input_bam = SortSampleBam.output_bam,
-        recalibration_report_filename = sample_and_unmapped_bams.base_file_name + ".recal_data.csv",
-        sequence_group_interval = subgroup,
-        dbsnp_vcf = references.dbsnp_vcf,
-        dbsnp_vcf_index = references.dbsnp_vcf_index,
-        known_indels_sites_vcfs = references.known_indels_sites_vcfs,
-        known_indels_sites_indices = references.known_indels_sites_indices,
-        ref_dict = references.reference_fasta.ref_dict,
-        ref_fasta = references.reference_fasta.ref_fasta,
-        ref_fasta_index = references.reference_fasta.ref_fasta_index,
-        bqsr_scatter = bqsr_divisor,
-        preemptible_tries = papi_settings.agg_preemptible_tries
-    }
-  }
-
-  # Merge the recalibration reports resulting from by-interval recalibration
-  # The reports are always the same size
-  call Processing.GatherBqsrReports as GatherBqsrReports {
-    input:
-      input_bqsr_reports = BaseRecalibrator.recalibration_report,
-      output_report_filename = sample_and_unmapped_bams.base_file_name + ".recal_data.csv",
-      preemptible_tries = papi_settings.preemptible_tries
-  }
-
-  scatter (subgroup in CreateSequenceGroupingTSV.sequence_grouping_with_unmapped) {
-    # Apply the recalibration model by interval
-    call Processing.ApplyBQSR as ApplyBQSR {
-      input:
-        input_bam = SortSampleBam.output_bam,
-        output_bam_basename = recalibrated_bam_basename,
-        recalibration_report = GatherBqsrReports.output_bqsr_report,
-        sequence_group_interval = subgroup,
-        ref_dict = references.reference_fasta.ref_dict,
-        ref_fasta = references.reference_fasta.ref_fasta,
-        ref_fasta_index = references.reference_fasta.ref_fasta_index,
-        bqsr_scatter = bqsr_divisor,
-        compression_level = compression_level,
-        preemptible_tries = papi_settings.agg_preemptible_tries
-    }
-  }
-
-  # Merge the recalibrated BAM files resulting from by-interval recalibration
-  call Processing.GatherSortedBamFiles as GatherBamFiles {
-    input:
-      input_bams = ApplyBQSR.recalibrated_bam,
-      output_bam_basename = sample_and_unmapped_bams.base_file_name,
-      total_input_size = agg_bam_size,
-      compression_level = compression_level,
-      preemptible_tries = papi_settings.agg_preemptible_tries
-  }
-
   # Outputs that will be retained when execution is complete
   output {
     Array[File] quality_yield_metrics = CollectQualityYieldMetrics.quality_yield_metrics
@@ -266,15 +155,7 @@ workflow UnmappedBamToAlignedBam {
     Array[File] unsorted_read_group_quality_distribution_pdf = CollectUnsortedReadgroupBamQualityMetrics.quality_distribution_pdf
     Array[File] unsorted_read_group_quality_distribution_metrics = CollectUnsortedReadgroupBamQualityMetrics.quality_distribution_metrics
 
-    File? cross_check_fingerprints_metrics = CrossCheckFingerprints.cross_check_fingerprints_metrics
-
-    File selfSM = CheckContamination.selfSM
-    Float contamination = CheckContamination.contamination
-
     File duplicate_metrics = MarkDuplicates.duplicate_metrics
-    File output_bqsr_reports = GatherBqsrReports.output_bqsr_report
-
-    File output_bam = GatherBamFiles.output_bam
-    File output_bam_index = GatherBamFiles.output_bam_index
+    File output_bam = MarkDuplicates.output_bam
   }
 }
