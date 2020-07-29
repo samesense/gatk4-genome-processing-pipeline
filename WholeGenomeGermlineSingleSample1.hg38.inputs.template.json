@@ -46,6 +46,6 @@
 
   "WholeGenomeGermlineSingleSample1.papi_settings": {
     "preemptible_tries": 5,
-    "agg_preemptible_tries":20
+    "agg_preemptible_tries":100
   }
 }
