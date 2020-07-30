@@ -1,14 +1,14 @@
 version 1.0
 
-#import "./GermlineVariantDiscovery.wdl" as Calling
-#import "./Qc.wdl" as QC
-#import "./Utilities.wdl" as Utils
-#import "./BamProcessing.wdl" as BamProcessing
+import "./GermlineVariantDiscovery.wdl" as Calling
+import "./Qc.wdl" as QC
+import "./Utilities.wdl" as Utils
+import "./BamProcessing.wdl" as BamProcessing
 
-import "GermlineVariantDiscovery.wdl" as Calling
-import "Qc.wdl" as QC
-import "Utilities.wdl" as Utils
-import "BamProcessing.wdl" as BamProcessing
+#import "GermlineVariantDiscovery.wdl" as Calling
+#import "Qc.wdl" as QC
+#import "Utilities.wdl" as Utils
+#import "BamProcessing.wdl" as BamProcessing
 
 workflow VariantCalling {
 

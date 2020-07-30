@@ -28,19 +28,19 @@ version 1.0
 ## page at https://hub.docker.com/r/broadinstitute/genomes-in-the-cloud/ for detailed
 ## licensing information pertaining to the included programs.
 
-import "./tasks/UnmappedBamToAlignedBam1.wdl" as ToBam1
-import "./tasks/AggregatedBamQC.wdl" as AggregatedQC
-import "./tasks/Qc.wdl" as QC
-import "./tasks/BamToCram.wdl" as ToCram
-import "./tasks/VariantCalling.wdl" as ToGvcf
-import "./structs/GermlineStructs.wdl"
+#import "./tasks/UnmappedBamToAlignedBam1.wdl" as ToBam1
+#import "./tasks/AggregatedBamQC.wdl" as AggregatedQC
+#import "./tasks/Qc.wdl" as QC
+#import "./tasks/BamToCram.wdl" as ToCram
+#import "./tasks/VariantCalling.wdl" as ToGvcf
+#import "./structs/GermlineStructs.wdl"
 
-# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/UnmappedBamToAlignedBam1.wdl" as ToBam1
-# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/AggregatedBamQC.wdl" as AggregatedQC
-# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/Qc.wdl" as QC
-# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/BamToCram.wdl" as ToCram
-# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/VariantCalling.wdl" as ToGvcf
-# import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/structs/GermlineStructs.wdl"
+import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/UnmappedBamToAlignedBam1.wdl" as ToBam1
+import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/AggregatedBamQC.wdl" as AggregatedQC
+import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/Qc.wdl" as QC
+import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/BamToCram.wdl" as ToCram
+import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/tasks/VariantCalling.wdl" as ToGvcf
+import "https://raw.githubusercontent.com/samesense/gatk4-genome-processing-pipeline/1.0.0/structs/GermlineStructs.wdl"
 
 # WORKFLOW DEFINITION
 workflow WholeGenomeGermlineSingleSample1 {
