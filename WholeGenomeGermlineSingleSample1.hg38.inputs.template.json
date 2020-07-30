@@ -45,7 +45,7 @@
   "WholeGenomeGermlineSingleSample1.haplotype_database_file": "gs://arcus-jpe-pipe-stage-storage/data/raw/gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.haplotype_database.txt",
 
   "WholeGenomeGermlineSingleSample1.papi_settings": {
-    "preemptible_tries": 5,
-    "agg_preemptible_tries":100
+    "preemptible_tries": 0,
+    "agg_preemptible_tries":0
   }
 }
