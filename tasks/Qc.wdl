@@ -52,7 +52,7 @@ task CollectUnsortedReadgroupBamQualityMetrics {
     Int preemptible_tries
   }
 
-  Int disk_size = ceil(size(input_bam, "GiB")) + 20
+  Int disk_size = ceil(size(input_bam, "GiB")) + 40
 
   command {
     java -Xms5000m -jar /usr/gitc/picard.jar \
@@ -74,7 +74,7 @@ task CollectUnsortedReadgroupBamQualityMetrics {
   runtime {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
-    memory: "7 GiB"
+    memory: "10 GiB"
     disks: "local-disk " + disk_size + " HDD"
     preemptible: preemptible_tries
   }
