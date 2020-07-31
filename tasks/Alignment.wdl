@@ -139,7 +139,7 @@ task SamSplitter {
 
   Float unmapped_bam_size = size(input_bam, "GiB")
   # Since the output bams are less compressed than the input bam we need a disk multiplier that's larger than 2.
-  Float disk_multiplier = 2.5
+  Float disk_multiplier = 3.5
   Int disk_size = ceil(disk_multiplier * unmapped_bam_size + 20)
 
   command {
@@ -161,7 +161,7 @@ task SamSplitter {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "3.75 GiB"
+    memory: "4.75 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
 }
