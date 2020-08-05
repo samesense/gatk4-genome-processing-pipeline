@@ -131,7 +131,7 @@ task HaplotypeCaller_GATK4_VCF {
     noAddress:true
     docker: gatk_docker
     preemptible: preemptible_tries
-    memory: "6.5 GiB"
+    memory: "8.5 GiB"
     cpu: "2"
     disks: "local-disk " + disk_size + " HDD"
   }
