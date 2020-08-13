@@ -23,7 +23,7 @@ task CollectQualityYieldMetrics {
     Int preemptible_tries
   }
 
-  Int disk_size = ceil(size(input_bam, "GiB")) + 50
+  Int disk_size = ceil(size(input_bam, "GiB")) + 60
 
   command {
     java -Xms2000m -jar /usr/gitc/picard.jar \
@@ -36,7 +36,7 @@ task CollectQualityYieldMetrics {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     disks: "local-disk " + disk_size + " HDD"
-    memory: "3 GiB"
+    memory: "7 GiB"
     preemptible: preemptible_tries
   }
   output {

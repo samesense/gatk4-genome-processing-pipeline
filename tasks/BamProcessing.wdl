@@ -109,12 +109,12 @@ task MarkDuplicates {
     # Sometimes we wish to supply "null" in order to turn off optical duplicate detection
     # This can be desirable if you don't mind the estimated library size being wrong and optical duplicate detection is taking >7 days and failing
     String? read_name_regex
-    Int memory_multiplier = 2
+    Int memory_multiplier = 4
   }
 
   # The merged bam will be smaller than the sum of the parts so we need to account for the unmerged inputs and the merged output.
   # Mark Duplicates takes in as input readgroup bams and outputs a slightly smaller aggregated bam. Giving .25 as wiggleroom
-  Float md_disk_multiplier = 3
+  Float md_disk_multiplier = 4
   Int disk_size = ceil(md_disk_multiplier * total_input_size) + 20
 
   Float memory_size = 7.5 * memory_multiplier
