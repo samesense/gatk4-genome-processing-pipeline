@@ -52,7 +52,7 @@ task CollectUnsortedReadgroupBamQualityMetrics {
     Int preemptible_tries
   }
 
-  Int disk_size = ceil(size(input_bam, "GiB")) + 50
+  Int disk_size = ceil(size(input_bam, "GiB")) + 70
 
   command {
     java -Xms10000m -jar /usr/gitc/picard.jar \
