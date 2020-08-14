@@ -23,7 +23,7 @@ task CollectQualityYieldMetrics {
     Int preemptible_tries
   }
 
-  Int disk_size = ceil(size(input_bam, "GiB")) + 60
+  Int disk_size = ceil(size(input_bam, "GiB")) + 100
 
   command {
     java -Xms2000m -jar /usr/gitc/picard.jar \
@@ -36,7 +36,7 @@ task CollectQualityYieldMetrics {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     disks: "local-disk " + disk_size + " HDD"
-    memory: "7 GiB"
+    memory: "16 GiB"
     preemptible: preemptible_tries
   }
   output {
@@ -216,7 +216,7 @@ task CrossCheckFingerprints {
     String cross_check_by
   }
 
-  Int disk_size = ceil(total_input_size) + 20
+  Int disk_size = ceil(total_input_size) + 100
 
   command <<<
     java -Dsamjdk.buffer_size=131072 \
@@ -234,7 +234,7 @@ task CrossCheckFingerprints {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "2 GiB"
+    memory: "10 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {
