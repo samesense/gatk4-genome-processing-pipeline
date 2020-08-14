@@ -117,7 +117,7 @@ task MarkDuplicates {
   Float md_disk_multiplier = 6
   Int disk_size = ceil(md_disk_multiplier * total_input_size) + 20
 
-  Float memory_size = 7.5 * memory_multiplier
+  Float memory_size = 20.5 * memory_multiplier
   Int java_memory_size = (ceil(memory_size) - 2)
 
   # Task is assuming query-sorted input so that the Secondary and Supplementary reads get marked correctly
