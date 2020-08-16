@@ -438,7 +438,7 @@ task CollectRawWgsMetrics {
   }
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB")
-  Int disk_size = ceil(size(input_bam, "GiB") + ref_size) + 20
+  Int disk_size = 2 * ceil(size(input_bam, "GiB") + ref_size) + 20
 
   Int memory_size = ceil((if (disk_size < 110) then 5 else 7) * memory_multiplier)
   String java_memory_size = (memory_size - 1) * 5000
@@ -525,7 +525,7 @@ task CalculateReadGroupChecksum {
     Int preemptible_tries
   }
 
-  Int disk_size = ceil(size(input_bam, "GiB")) + 20
+  Int disk_size = 2 * ceil(size(input_bam, "GiB")) + 20
 
   command {
     java -Xms1000m -jar /usr/gitc/picard.jar \
@@ -537,7 +537,7 @@ task CalculateReadGroupChecksum {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "2 GiB"
+    memory: "100 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {
