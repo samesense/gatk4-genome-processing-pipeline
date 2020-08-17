@@ -104,7 +104,7 @@ task CollectReadgroupBamQualityMetrics {
   }
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB") + size(ref_dict, "GiB")
-  Int disk_size = ceil(size(input_bam, "GiB") + ref_size) + 20
+  Int disk_size = ceil(size(input_bam, "GiB") + ref_size) + 100
 
   command {
     # These are optionally generated, but need to exist for Cromwell's sake
@@ -127,7 +127,7 @@ task CollectReadgroupBamQualityMetrics {
   runtime {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
-    memory: "7 GiB"
+    memory: "30 GiB"
     disks: "local-disk " + disk_size + " HDD"
     preemptible: preemptible_tries
   }
@@ -434,7 +434,7 @@ task CollectRawWgsMetrics {
     File ref_fasta_index
     Int read_length
     Int preemptible_tries
-    Int memory_multiplier =10 
+    Int memory_multiplier = 100 
   }
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB")
