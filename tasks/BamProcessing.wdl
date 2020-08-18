@@ -542,7 +542,7 @@ task CheckContamination {
   runtime {
     noAddress: true
     preemptible: preemptible_tries
-    memory: "7.5 GiB"
+    memory: "40 GiB"
     disks: "local-disk " + disk_size + " HDD"
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/verify-bam-id:c1cba76e979904eb69c31520a0d7f5be63c72253-1553018888"
     cpu: 2
