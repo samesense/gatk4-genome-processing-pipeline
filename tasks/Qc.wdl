@@ -415,7 +415,7 @@ task CollectWgsMetrics {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "3 GiB"
+    memory: "32 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {
