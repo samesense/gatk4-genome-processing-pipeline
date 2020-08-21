@@ -434,7 +434,7 @@ task CollectRawWgsMetrics {
     File ref_fasta_index
     Int read_length
     Int preemptible_tries
-    Int memory_multiplier = 85 
+    Int memory_multiplier = 80 
   }
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB")
@@ -459,7 +459,7 @@ task CollectRawWgsMetrics {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "~{memory_size} GiB"
+    memory: "300 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {
