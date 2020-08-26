@@ -109,15 +109,15 @@ task MarkDuplicates {
     # Sometimes we wish to supply "null" in order to turn off optical duplicate detection
     # This can be desirable if you don't mind the estimated library size being wrong and optical duplicate detection is taking >7 days and failing
     String? read_name_regex
-    Int memory_multiplier = 1
+    Int memory_multiplier = 50 
   }
 
   # The merged bam will be smaller than the sum of the parts so we need to account for the unmerged inputs and the merged output.
   # Mark Duplicates takes in as input readgroup bams and outputs a slightly smaller aggregated bam. Giving .25 as wiggleroom
-  Float md_disk_multiplier = 3
+  Float md_disk_multiplier = 6
   Int disk_size = ceil(md_disk_multiplier * total_input_size) + 20
 
-  Float memory_size = 7.5 * memory_multiplier
+  Float memory_size = 25.5 * memory_multiplier
   Int java_memory_size = (ceil(memory_size) - 2)
 
   # Task is assuming query-sorted input so that the Secondary and Supplementary reads get marked correctly
@@ -358,7 +358,7 @@ task GatherSortedBamFiles {
   }
 
   # Multiply the input bam size by two to account for the input and output
-  Int disk_size = ceil(2 * total_input_size) + 20
+  Int disk_size = ceil(3 * total_input_size) + 20
 
   command {
     java -Dsamjdk.compression_level=~{compression_level} -Xms2000m -jar /usr/gitc/picard.jar \
@@ -372,7 +372,7 @@ task GatherSortedBamFiles {
     noAddress: true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "3 GiB"
+    memory: "4 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {
@@ -542,7 +542,7 @@ task CheckContamination {
   runtime {
     noAddress: true
     preemptible: preemptible_tries
-    memory: "7.5 GiB"
+    memory: "40 GiB"
     disks: "local-disk " + disk_size + " HDD"
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/verify-bam-id:c1cba76e979904eb69c31520a0d7f5be63c72253-1553018888"
     cpu: 2

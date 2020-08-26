@@ -132,7 +132,7 @@ workflow UnmappedBamToAlignedBam {
   # Aggregate aligned+merged flowcell BAM files and mark duplicates
   # We take advantage of the tool's ability to take multiple BAM inputs and write out a single output
   # to avoid having to spend time just merging BAM files.
-  call Processing.MarkDuplicates as MarkDuplicates {
+  call Processing.MarkDuplicatesSpark as MarkDuplicates {
     input:
       input_bams = output_aligned_bam,
       output_bam_basename = sample_and_unmapped_bams.base_file_name + ".aligned.unsorted.duplicates_marked",

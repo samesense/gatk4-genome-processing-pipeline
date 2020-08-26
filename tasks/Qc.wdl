@@ -23,7 +23,7 @@ task CollectQualityYieldMetrics {
     Int preemptible_tries
   }
 
-  Int disk_size = ceil(size(input_bam, "GiB")) + 20
+  Int disk_size = ceil(size(input_bam, "GiB")) + 100
 
   command {
     java -Xms2000m -jar /usr/gitc/picard.jar \
@@ -36,7 +36,7 @@ task CollectQualityYieldMetrics {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     disks: "local-disk " + disk_size + " HDD"
-    memory: "3 GiB"
+    memory: "16 GiB"
     preemptible: preemptible_tries
   }
   output {
@@ -52,10 +52,10 @@ task CollectUnsortedReadgroupBamQualityMetrics {
     Int preemptible_tries
   }
 
-  Int disk_size = ceil(size(input_bam, "GiB")) + 20
+  Int disk_size = ceil(size(input_bam, "GiB")) + 70
 
   command {
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    java -Xms10000m -jar /usr/gitc/picard.jar \
       CollectMultipleMetrics \
       INPUT=~{input_bam} \
       OUTPUT=~{output_bam_prefix} \
@@ -74,7 +74,7 @@ task CollectUnsortedReadgroupBamQualityMetrics {
   runtime {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
-    memory: "7 GiB"
+    memory: "15 GiB"
     disks: "local-disk " + disk_size + " HDD"
     preemptible: preemptible_tries
   }
@@ -104,7 +104,7 @@ task CollectReadgroupBamQualityMetrics {
   }
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB") + size(ref_dict, "GiB")
-  Int disk_size = ceil(size(input_bam, "GiB") + ref_size) + 20
+  Int disk_size = ceil(size(input_bam, "GiB") + ref_size) + 100
 
   command {
     # These are optionally generated, but need to exist for Cromwell's sake
@@ -127,7 +127,7 @@ task CollectReadgroupBamQualityMetrics {
   runtime {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
-    memory: "7 GiB"
+    memory: "30 GiB"
     disks: "local-disk " + disk_size + " HDD"
     preemptible: preemptible_tries
   }
@@ -182,7 +182,7 @@ task CollectAggregationMetrics {
   runtime {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
-    memory: "7 GiB"
+    memory: "30 GiB"
     disks: "local-disk " + disk_size + " HDD"
     preemptible: preemptible_tries
   }
@@ -216,7 +216,7 @@ task CrossCheckFingerprints {
     String cross_check_by
   }
 
-  Int disk_size = ceil(total_input_size) + 20
+  Int disk_size = ceil(total_input_size) + 100
 
   command <<<
     java -Dsamjdk.buffer_size=131072 \
@@ -234,7 +234,7 @@ task CrossCheckFingerprints {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "2 GiB"
+    memory: "10 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {
@@ -415,7 +415,7 @@ task CollectWgsMetrics {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "3 GiB"
+    memory: "32 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {
@@ -434,14 +434,14 @@ task CollectRawWgsMetrics {
     File ref_fasta_index
     Int read_length
     Int preemptible_tries
-    Int memory_multiplier = 1
+    Int memory_multiplier = 80 
   }
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB")
-  Int disk_size = ceil(size(input_bam, "GiB") + ref_size) + 20
+  Int disk_size = 3 * ceil(size(input_bam, "GiB") + ref_size) + 20
 
   Int memory_size = ceil((if (disk_size < 110) then 5 else 7) * memory_multiplier)
-  String java_memory_size = (memory_size - 1) * 1000
+  String java_memory_size = (memory_size - 1) * 5000
 
   command {
     java -Xms~{java_memory_size}m -jar /usr/gitc/picard.jar \
@@ -459,7 +459,7 @@ task CollectRawWgsMetrics {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "~{memory_size} GiB"
+    memory: "300 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {
@@ -525,7 +525,7 @@ task CalculateReadGroupChecksum {
     Int preemptible_tries
   }
 
-  Int disk_size = ceil(size(input_bam, "GiB")) + 20
+  Int disk_size = 2 * ceil(size(input_bam, "GiB")) + 20
 
   command {
     java -Xms1000m -jar /usr/gitc/picard.jar \
@@ -537,7 +537,7 @@ task CalculateReadGroupChecksum {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "2 GiB"
+    memory: "100 GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {

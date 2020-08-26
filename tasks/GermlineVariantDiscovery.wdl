@@ -98,7 +98,7 @@ task HaplotypeCaller_GATK4_VCF {
   String output_file_name = vcf_basename + output_suffix
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB") + size(ref_dict, "GiB")
-  Int disk_size = ceil(((size(input_bam, "GiB") + 30) / hc_scatter) + ref_size) + 20
+  Int disk_size = ceil(((size(input_bam, "GiB") + 30) / hc_scatter) + ref_size) + 50
 
   String bamout_arg = if make_bamout then "-bamout ~{vcf_basename}.bamout.bam" else ""
 
@@ -131,7 +131,7 @@ task HaplotypeCaller_GATK4_VCF {
     noAddress:true
     docker: gatk_docker
     preemptible: preemptible_tries
-    memory: "6.5 GiB"
+    memory: "8.5 GiB"
     cpu: "2"
     disks: "local-disk " + disk_size + " HDD"
   }
