@@ -434,7 +434,7 @@ task CollectRawWgsMetrics {
     File ref_fasta_index
     Int read_length
     Int preemptible_tries
-    Int memory_multiplier = 10
+    Int memory_multiplier = 50
   }
 
   Float ref_size = size(ref_fasta, "GiB") + size(ref_fasta_index, "GiB")
