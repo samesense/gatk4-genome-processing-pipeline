@@ -441,7 +441,7 @@ task CollectRawWgsMetrics {
   Int disk_size = 3 * ceil(size(input_bam, "GiB") + ref_size) + 20
 
   Int memory_size = ceil((if (disk_size < 110) then 5 else 7) * memory_multiplier)
-  String java_memory_size = (memory_size - 1) * 8000
+  String java_memory_size = (memory_size - 1) * 1000
 
   command {
     java -Xms~{java_memory_size}m -jar /usr/gitc/picard.jar \
@@ -459,7 +459,7 @@ task CollectRawWgsMetrics {
     noAddress:true
     docker: "gcr.io/arcus-jpe-pipe-stage-4f4279cc/genomes-in-the-cloud:2.4.3-1564508330"
     preemptible: preemptible_tries
-    memory: "300 GiB"
+    memory: "~{memory_size} GiB"
     disks: "local-disk " + disk_size + " HDD"
   }
   output {
